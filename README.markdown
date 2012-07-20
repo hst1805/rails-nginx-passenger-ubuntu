@@ -1,7 +1,7 @@
 rails-nginx-passenger-ubuntu
 ============================
 
-My notes on setting up a simple production server with ubuntu, nginx, passenger and mysql for rails.
+My notes on setting up a simple production server with ubuntu, nginx, passenger and mysql for rails. ( Ubuntu 12.4 )
 
 Aliases
 -------
@@ -76,22 +76,25 @@ Check for newer version at http://www.rubyenterpriseedition.com/download.html
 
 Install package required by ruby enterprise, C compiler, Zlib development headers, OpenSSL development headers, GNU Readline development headers
 
-    sudo apt-get install build-essential zlib1g-dev libssl-dev libreadline5-dev
+    sudo apt-get install build-essential zlib1g-dev libssl-dev libreadline5
 
 Download and install Ruby Enterprise Edition
 
-    wget http://rubyforge.org/frs/download.php/66162/ruby-enterprise-X.X.X-ZZZZ.ZZ.tar.gz
-    tar xvfz ruby-enterprise-X.X.X-ZZZZ.ZZ.tar.gz 
-    rm ruby-enterprise-X.X.X-ZZZZ.ZZ.tar.gz 
-    cd ruby-enterprise-X.X.X-ZZZZ.ZZ/
-    sudo ./installer
+    wget ftp://ftp.ruby-lang.org//pub/ruby/1.9/ruby-1.9.2-p320.tar.gz
+    tar zxvf ruby-1.9.2-p320.tar.gz
+    rm zxvf ruby-1.9.2-p320.tar.gz
+    cd ruby-1.9.2-p320
+    ./configure --prefix=/opt/ruby
+    make
+    sudo make install
     
     
 Change target folder to /opt/ruby for easier upgrade later on
 
 Add Ruby Enterprise bin to PATH
 
-    echo "export PATH=/opt/ruby/bin:$PATH" >> ~/.profile && . ~/.profile
+    echo "export PATH=/opt/ruby/bin:$PATH" >> ~/.bashrc && . ~/.bashrc
+    echo "alias sudo='sudo env PATH=$PATH'" >> ~/.bashrc && . ~/.bashrc
     
 Verify the ruby installation
 
@@ -99,10 +102,19 @@ Verify the ruby installation
     ruby 1.8.7 (2009-06-12 patchlevel 174) [x86_64-linux], MBARI 0x6770, Ruby Enterprise Edition 20090928
 
 
+Installing Bundler
+----------------
+
+    sudo gem install bundler
+
 Installing git
 ----------------
 
     sudo apt-get install git-core
+
+Passenger 
+----------------
+    sudo aptitude install libcurl4-openssl-dev
 
 Nginx
 -------
@@ -172,7 +184,7 @@ If you want to install the latest version of ImageMagick. I used MiniMagick that
     # If you already installed imagemagick from apt-get
     sudo apt-get remove imagemagick
 
-    sudo apt-get install libperl-dev gcc libjpeg62-dev libbz2-dev libtiff4-dev libwmf-dev libz-dev libpng12-dev libx11-dev libxt-dev libxext-dev libxml2-dev libfreetype6-dev liblcms1-dev libexif-dev perl libjasper-dev libltdl3-dev graphviz gs-gpl pkg-config
+    sudo apt-get install libperl-dev gcc libjpeg62-dev libbz2-dev libtiff4-dev libwmf-dev zlib1g-dev libpng12-dev libx11-dev libxt-dev libxext-dev libxml2-dev libfreetype6-dev liblcms1-dev libexif-dev perl libjasper-dev libltdl-dev graphviz gs-gpl pkg-config
 
 Use wget to grab the source from ImageMagick.org.
 
@@ -233,4 +245,15 @@ Restart nginx
     
 Check you ipaddress and see if you can acess the rails application
         
+
+Other - Nokogiri
+------------------
+
+    sudo apt-get install libxml2 libxml2-dev libxslt1-dev
+    sudo gem install nokogiri
+
+Other - Nodejs ( for asset pipeline)
+------------------
+
+    sudo apt-get install nodejs
 
